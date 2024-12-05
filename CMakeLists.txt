@@ -3,19 +3,23 @@ project(CyberGear_SDK)
  
  
 #设定编译参数
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_BUILD_TYPE "Debug")
  
 #设定源码列表.cpp
 set(SOURCE_FILES main.c)
 #设定所有源码列表 ：aux_source_directory(<dir> <variable>)
 aux_source_directory(./src SRC_DIR)  
+aux_source_directory(./serial/src SERIAL_SRC_DIR)  
 
  
  
 #设定头文件路径
-include_directories(./include/)
+include_directories(./include/ ./serial/include)
 #include_directories("路径1"  “路径2”...)
+include_directories("/usr/include/c++/x86_64-linux-gnu")
+
  
  
 #设定链接库的路径（一般使用第三方非系统目录下的库）
@@ -35,7 +39,7 @@ include_directories(./include/)
  
  
 #生成可执行文件
-add_executable(${PROJECT_NAME}_node   ${SOURCE_FILES} ${SRC_DIR})
+add_executable(${PROJECT_NAME}_node   ${SOURCE_FILES} ${SRC_DIR} ${SERIAL_SRC_DIR})
  
  
 #target_link_libraries(${PROJECT_NAME}_node  pthred glog)#就是g++ 编译选项中-l后的内容，不要有多余空格
