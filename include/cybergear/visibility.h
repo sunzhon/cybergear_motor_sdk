@@ -24,8 +24,9 @@
   #define DLL_LOCAL
 #else
   #if __GNUC__ >= 4
-    #define CYBERGEARAPI __attribute__ ((visibility ("default")))
-    #define CYBERGEARHIDE  __attribute__ ((visibility ("hidden")))
+    //#define CYBERGEARAPI __attribute__ ((visibility ("default")))
+    //#define CYBERGEARHIDE  __attribute__ ((visibility ("hidden")))
+    #define CYBERGEARAPI
   #else
     #define CYBERGEARAPI
     #define CYBERGEARHIDE

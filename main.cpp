@@ -2,8 +2,9 @@
 //  main.c
 //
 //  Created by Eric Wu on 2023/9/4.
+//  Modified by Tao Sun on 2024/12/5
 //
-
+#include <iostream>
 #include <stdio.h>
 #include <string.h>
 #include <serial/serial.h>
@@ -15,14 +16,28 @@ std::string port_ = "/dev/ttyUSB0";                      //串口端口
  serial::Serial serial_;                 //串口实例
  std::string data_;
 
-void write_data(const cyber_gear_can_t * frame){
+void write_serial(const cyber_gear_can_t * frame){
 	uint8_t data[4+13];
-	data[0]=0x41;
-	data[1]=0x54;
-	data[15]=0x0d;
-	data[16]=0x0a;
-	memcpy(data+2,frame->can_id,4);
-	memcpy(data+6,frame->can_data,8);
+	// serial frame head and end
+	data[0] = 0x41;
+	data[1] = 0x54;
+	data[15] = 0x0d;
+	data[16] = 0x0a;
+	// put can frame into serial frame
+	data[3] = frame->can_id.bytes[0];
+	data[4] = frame->can_id.bytes[1];
+	data[5] = frame->can_id.bytes[2];
+	data[6] = frame->can_id.bytes[3];
+
+	data[7] = frame->can_data.bytes[0];
+	data[8] = frame->can_data.bytes[1];
+	data[9] = frame->can_data.bytes[2];
+	data[10] = frame->can_data.bytes[3];
+	data[11] = frame->can_data.bytes[4];
+	data[12] = frame->can_data.bytes[5];
+	data[13] = frame->can_data.bytes[6];
+	data[14] = frame->can_data.bytes[7];
+
 	serial_.write((uint8_t*)data,17);
 }
 
@@ -59,7 +74,7 @@ void read_serial(){
 
 
 
-void open_serial(std::string port_, int buadrate_){
+void open_serial(std::string port_, int baudrate_){
 	try
 	{
 		std::cout <<  "Sucessfully open imu device:" << port_.c_str() << ", buad rate:"<<baudrate_<<  std::endl;
@@ -86,7 +101,7 @@ void open_serial(std::string port_, int buadrate_){
 
 int main(int argc, const char * argv[]) {
 	// open serial 
-	open_serial(port_1, buadrare_);
+	open_serial(port_, baudrate_);
 
 	cyber_gear_can_t frame;
 	cyber_gear_can_init(&frame);

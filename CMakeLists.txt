@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.9)
+cmake_minimum_required(VERSION 3.10)
 project(CyberGear_SDK)
  
  
@@ -6,19 +6,22 @@ project(CyberGear_SDK)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_BUILD_TYPE "Debug")
+set(CMAKE_CXX_COMPILER "/usr/bin/g++")
+
  
 #设定源码列表.cpp
-set(SOURCE_FILES main.c)
+set(SOURCE_FILES main.cpp)
 #设定所有源码列表 ：aux_source_directory(<dir> <variable>)
-aux_source_directory(./src SRC_DIR)  
+aux_source_directory(./src/cybergear SRC_DIR)  
 aux_source_directory(./serial/src SERIAL_SRC_DIR)  
+message(${SRC_DIR})
 
  
  
 #设定头文件路径
-include_directories(./include/ ./serial/include)
+include_directories(./include/cybergear ./serial/include)
 #include_directories("路径1"  “路径2”...)
-include_directories("/usr/include/c++/x86_64-linux-gnu")
+#include_directories("/usr/include/c++/x86_64-linux-gnu")
 
  
  
@@ -39,7 +42,7 @@ include_directories("/usr/include/c++/x86_64-linux-gnu")
  
  
 #生成可执行文件
-add_executable(${PROJECT_NAME}_node   ${SOURCE_FILES} ${SRC_DIR} ${SERIAL_SRC_DIR})
+add_executable(${PROJECT_NAME}_node   ${SOURCE_FILES} ${SRC_DIR}  ${SERIAL_SRC_DIR})
  
  
 #target_link_libraries(${PROJECT_NAME}_node  pthred glog)#就是g++ 编译选项中-l后的内容，不要有多余空格
