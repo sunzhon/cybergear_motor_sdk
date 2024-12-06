@@ -7,8 +7,11 @@
 #include <iostream>
 #include <stdio.h>
 #include <string.h>
+
 #include <serial/serial.h>
-#include "cyber_gear_protocol.h"
+extern "C"{
+#include <cyber_gear_protocol.h>
+}
 
 
 std::string port_ = "/dev/ttyUSB0";                      //串口端口
