@@ -14,8 +14,8 @@ extern "C"{
 }
 
 
-std::string port_ = "/dev/ttyUSB0";                      //串口端口
- int baudrate_ = 10000;                          //波特率
+std::string port_ = "/dev/ttyACM0";                      //串口端口
+ int baudrate_ = 115200;                          //波特率
  serial::Serial serial_;                 //串口实例
  std::string data_;
 
@@ -40,6 +40,12 @@ void write_serial(const cyber_gear_can_t * frame){
 	data[12] = frame->can_data.bytes[5];
 	data[13] = frame->can_data.bytes[6];
 	data[14] = frame->can_data.bytes[7];
+	
+	printf("command frame:\n");
+	for(uint8_t idx=0;idx<17;idx++){
+		printf("%x ", data[idx]);
+	}
+	printf("\n");
 
 	serial_.write((uint8_t*)data,17);
 }
@@ -60,16 +66,20 @@ void read_serial(){
       if (serial_.available())                                                                                                
       {                                                                                                                       
               data_ = serial_.read(serial_.available());                                                                      
-	      /*
-                                                                                                                              
+	      
+                
               {                                                                                                               
-                      boost::mutex::scoped_lock lock(m_mutex_data_buffer_);                                                   
+			//boost::mutex::scoped_lock lock(m_mutex_data_buffer_);                                                   
+			      
+		      printf("sensory feedback:\n");
                       for(uint8_t i=0;i<data_.length();i++)                                                                   
                       {                                                                                                       
-                              data_buffer_ptr_->push_back(data_[i]);                                                          
+                              //data_buffer_ptr_->push_back(data_[i]);                                                          
+			      printf("%x",data_[i]);
                       }                                                                                                       
+		      printf("\n");
               } 
-		*/	      
+		      
                                                                                                                               
       } 
 }
@@ -109,7 +119,7 @@ int main(int argc, const char * argv[]) {
 	cyber_gear_can_t frame;
 	cyber_gear_can_init(&frame);
 	cyber_gear_set_can_id_host_can_id(&frame, 1);
-	cyber_gear_set_can_id_target_can_id(&frame, 2);
+	cyber_gear_set_can_id_target_can_id(&frame, 127);
 
 	printf("Fetch current motor status\n");
 	cyber_gear_set_can_id_communication_type(&frame, COMMUNICATION_FETCH_DEVICE_ID);
@@ -118,8 +128,10 @@ int main(int argc, const char * argv[]) {
 	//send frame to motor via serial port
 	write_serial(&frame);
 	read_serial();
+	printf("data:");
 	close_serial();
-
+	
+	/*
 
 	printf("Set Run mode I\n");
 	bzero(frame.can_data.bytes, 8);
@@ -135,6 +147,8 @@ int main(int argc, const char * argv[]) {
 	bzero(frame.can_data.bytes, 8);
 	cyber_gear_build_parameter_write_frame_with_float_value(&frame, PARAMETER_SPD_REF, 30.0);
 	cyber_gear_can_dump(&frame);    
+
+	*/
 	return 0;
 }
 
