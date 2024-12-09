@@ -66,11 +66,8 @@ void read_serial(){
       if (serial_.available())                                                                                                
       {                                                                                                                       
               data_ = serial_.read(serial_.available());                                                                      
-	      
-                
               {                                                                                                               
 			//boost::mutex::scoped_lock lock(m_mutex_data_buffer_);                                                   
-			      
 		      printf("sensory feedback:\n");
                       for(uint8_t i=0;i<data_.length();i++)                                                                   
                       {                                                                                                       
