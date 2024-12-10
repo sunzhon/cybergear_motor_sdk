@@ -19,6 +19,16 @@
 #define EXPONENT(x) (((x) & 0x7C00) >> 10)
 #define SIGNED_INF_VALUE(x)  ((x & SIGN_MASK) | 0x7C00)
 
+
+// uint32_t FloatToByte(float Data)
+// {
+
+//   unsigned int longdata = 0;
+//   longdata = *((unsigned int *)&Data);
+//   return longdata;
+// }
+
+
 short f16_sub(short ain,short bin)
 {
     unsigned short a=ain;

@@ -36,3 +36,4 @@ int f16_lte(short a,short b);
 int f16_lt(short a,short b);
 int f16_neq(short a,short b);
 
+//uint32_t FloatToByte(float Data);

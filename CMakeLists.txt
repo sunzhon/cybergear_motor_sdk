@@ -14,6 +14,7 @@ set(CMAKE_BUILD_TYPE "Debug")
 
  
 #设定头文件路径
+include_directories("./user/")
 #include_directories("路径1"  “路径2”...)
 
 #设定链接库的路径（一般使用第三方非系统目录下的库）
@@ -33,8 +34,8 @@ add_subdirectory(cybergear)
 #可以单独生成多个模块
  
  
-#生成可执行文件
-add_executable(${PROJECT_NAME}  main.cpp)
+#生成可执行文件S
+add_executable(${PROJECT_NAME}  main.cpp ./user/can_usb.cpp)
  
 target_link_libraries(${PROJECT_NAME}  PRIVATE cybergear serial)#就是g++ 编译选项中-l后的内容，不要有多余空格
 target_include_directories(${PROJECT_NAME} PRIVATE serial cybergear)

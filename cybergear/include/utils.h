@@ -9,6 +9,8 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include "endian.h"
+
 
 typedef union {
     uint64_t value;
