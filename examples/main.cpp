@@ -3,16 +3,12 @@
 //
 //  Created by Eric Wu on 2023/9/4.
 //  Modified by Tao Sun on 2024/12/5
+//  Modified by Guohui Liu on 2024/12/10
 //
 
 #include "can_usb.hpp"
 
 
-// std::string port_ = "/dev/ttyACM0"; // 串口端口
-// int baudrate_ = 115200;				// 波特率
-// serial::Serial serial_;				// 串口实例
-// std::string data_;
-// uint8_t data_[16];
 
 std::string port_ = "/dev/ttyACM0"; // 串口端口
 int baudrate_ = 115200;				// 波特率
@@ -23,7 +19,7 @@ int main(int argc, const char *argv[])
 
 	// open serial
 	open_serial(port_, baudrate_);
-    printf("Select Motor Mode\n");
+    	printf("Select Motor Mode\n");
 	select_mode(CONTROL_MODE_VEL,0x7f);//set motion mode, here is velocity mode
 	usleep(250);
 	// cyber_gear_can_t frame;

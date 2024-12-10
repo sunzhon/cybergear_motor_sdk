@@ -6,7 +6,6 @@
 extern "C"
 {
 #include <cyber_gear_protocol.h>
-}
 
 enum
 {
@@ -76,3 +75,5 @@ void control_pos(uint8_t motor_id, float pos, float spd);
  * @param: spd 电机目标速度
  * */
 void control_vel(uint8_t motor_id, float spd);
+
+}

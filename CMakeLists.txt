@@ -14,7 +14,7 @@ set(CMAKE_BUILD_TYPE "Debug")
 
  
 #设定头文件路径
-include_directories("./user/")
+include_directories("./user/" "./serial/include"  "./cybergear/include")
 #include_directories("路径1"  “路径2”...)
 
 #设定链接库的路径（一般使用第三方非系统目录下的库）
@@ -33,12 +33,16 @@ add_subdirectory(cybergear)
 #add_library(动/静态链接库名称  SHARED/STATIC(可选，默认STATIC)  源码列表)
 #可以单独生成多个模块
  
- 
+add_library(canusb ./user/can_usb.cpp)
+target_link_libraries(canusb PRIVATE cybergear serial )
+target_include_directories(canusb PRIVATE serial cybergear )
+
+
 #生成可执行文件S
-add_executable(${PROJECT_NAME}  main.cpp ./user/can_usb.cpp)
+add_executable(${PROJECT_NAME}  examples/main.cpp)
  
-target_link_libraries(${PROJECT_NAME}  PRIVATE cybergear serial)#就是g++ 编译选项中-l后的内容，不要有多余空格
-target_include_directories(${PROJECT_NAME} PRIVATE serial cybergear)
+target_link_libraries(${PROJECT_NAME}  PRIVATE canusb)#就是g++ 编译选项中-l后的内容，不要有多余空格
+target_include_directories(${PROJECT_NAME} PRIVATE canusb)
  
 #ADD_CUSTOM_COMMAND( #执行shell命令
 #          TARGET myLevelDB 

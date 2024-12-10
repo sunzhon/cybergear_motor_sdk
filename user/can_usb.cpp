@@ -4,6 +4,8 @@
 
 serial::Serial serial_; // 串口实例
 std::string data_;
+extern "C" {
+
 
 int float_to_byte(float data)
 {
@@ -239,4 +241,6 @@ void control_vel(uint8_t motor_id, float spd)
     write_serial_little_endian(&frame);
     usleep(300);
     read_serial();
+}
+
 }
