@@ -49,3 +49,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE canusb)
 #          POST_BUILD #在目标文件myLevelDBbuild之后，执行下面的拷贝命令，还可以选择PRE_BUILD命令将会在其他依赖项执行前执行  PRE_LINK命令将会在其他依赖项执行完后执行  POST_BUILD命令将会在目标构建完后执行。
 #          COMMAND cp ./myLevelDB  ../
 #) 
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+	install(TARGETS canusb DESTINATION lib)  # This installs the library to the 'lib' directory
+endif()
+
