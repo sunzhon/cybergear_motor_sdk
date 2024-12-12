@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(CyberGear_SDK C CXX)
+project(cybergear_sdk C CXX)
  
  
 #设定编译参数
@@ -12,9 +12,12 @@ set(CMAKE_BUILD_TYPE "Debug")
 #设定源码列表.cpp
 #设定所有源码列表 ：aux_source_directory(<dir> <variable>)
 
+message("CMAKE_BINARY_DIR: ${CMAKE_BINARY_DIR}")
+set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/install)
+
  
 #设定头文件路径
-include_directories("./user/" "./serial/include"  "./cybergear/include")
+include_directories("./user/include" "./serial/include"  "./cybergear/include")
 #include_directories("路径1"  “路径2”...)
 
 #设定链接库的路径（一般使用第三方非系统目录下的库）
@@ -33,16 +36,16 @@ add_subdirectory(cybergear)
 #add_library(动/静态链接库名称  SHARED/STATIC(可选，默认STATIC)  源码列表)
 #可以单独生成多个模块
  
-add_library(canusb ./user/can_usb.cpp)
-target_link_libraries(canusb PRIVATE cybergear serial )
-target_include_directories(canusb PRIVATE serial cybergear )
+add_library(${PROJECT_NAME} ./user/src/can_usb.cpp)
+target_link_libraries(${PROJECT_NAME} PRIVATE cybergear serial )
+target_include_directories(${PROJECT_NAME} PRIVATE serial cybergear )
 
 
 #生成可执行文件S
-add_executable(${PROJECT_NAME}  examples/main.cpp)
+add_executable(${PROJECT_NAME}_example  examples/main.cpp)
  
-target_link_libraries(${PROJECT_NAME}  PRIVATE canusb)#就是g++ 编译选项中-l后的内容，不要有多余空格
-target_include_directories(${PROJECT_NAME} PRIVATE canusb)
+target_link_libraries(${PROJECT_NAME}_example  PRIVATE ${PROJECT_NAME})#就是g++ 编译选项中-l后的内容，不要有多余空格
+target_include_directories(${PROJECT_NAME}_example PRIVATE ${PROJECT_NAME})
  
 #ADD_CUSTOM_COMMAND( #执行shell命令
 #          TARGET myLevelDB 
@@ -53,3 +56,9 @@ if(CMAKE_BUILD_TYPE STREQUAL "Release")
 	install(TARGETS canusb DESTINATION lib)  # This installs the library to the 'lib' directory
 endif()
 
+# Install the header and library files
+install(TARGETS ${PROJECT_NAME}
+        DESTINATION lib)
+
+install(DIRECTORY user/include cybergear/include serial/include
+        DESTINATION include)
