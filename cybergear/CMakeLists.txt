@@ -7,7 +7,7 @@ project(cybergear)
 #set(CMAKE_BUILD_TYPE "Debug")
 #set(CMAKE_CXX_COMPILER "/usr/bin/g++")
 
-
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # generate a lib
  add_library(${PROJECT_NAME}

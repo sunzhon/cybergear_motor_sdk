@@ -36,7 +36,7 @@ add_subdirectory(cybergear)
 #add_library(动/静态链接库名称  SHARED/STATIC(可选，默认STATIC)  源码列表)
 #可以单独生成多个模块
  
-add_library(${PROJECT_NAME} ./user/src/can_usb.cpp)
+add_library(${PROJECT_NAME} SHARED ./user/src/can_usb.cpp)
 target_link_libraries(${PROJECT_NAME} PRIVATE cybergear serial )
 target_include_directories(${PROJECT_NAME} PRIVATE serial cybergear )
 
@@ -52,9 +52,6 @@ target_include_directories(${PROJECT_NAME}_example PRIVATE ${PROJECT_NAME})
 #          POST_BUILD #在目标文件myLevelDBbuild之后，执行下面的拷贝命令，还可以选择PRE_BUILD命令将会在其他依赖项执行前执行  PRE_LINK命令将会在其他依赖项执行完后执行  POST_BUILD命令将会在目标构建完后执行。
 #          COMMAND cp ./myLevelDB  ../
 #) 
-if(CMAKE_BUILD_TYPE STREQUAL "Release")
-	install(TARGETS canusb DESTINATION lib)  # This installs the library to the 'lib' directory
-endif()
 
 # Install the header and library files
 install(TARGETS ${PROJECT_NAME}
