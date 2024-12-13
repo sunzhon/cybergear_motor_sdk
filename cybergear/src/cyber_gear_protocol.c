@@ -292,8 +292,8 @@ cyber_gear_motor_status_t cyber_gear_parse_motor_status_frame(const cyber_gear_c
     float temperature = bit_utils_swap_big_endian_value_into_host_endian16(temperature_raw_16_bit.value) / 10.0;
     
     cyber_gear_motor_status_t motor_status = {
-        .motor_can_id = cyber_gear_get_can_id_target_id(frame),
-        .host_can_id = cyber_gear_get_can_id_int_value(frame, 8, 8),
+        .host_can_id = cyber_gear_get_can_id_target_id(frame),
+        .motor_can_id = cyber_gear_get_can_id_int_value(frame, 8, 8),
         .current_location = location,
         .current_speed = speed,
         .current_torque = torque,

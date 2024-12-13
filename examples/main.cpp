@@ -10,31 +10,23 @@
 
 
 
-std::string port_ = "/dev/ttyACM0"; // 串口端口
-int baudrate_ = 115200;				// 波特率
-
+std::string port = "/dev/ttyACM0"; // 串口端口
+int baudrate = 115200;				// 波特率
+std::vector<int> ids;
+std::shared_ptr<CyberGearCan> cybergear;
 
 int main(int argc, const char *argv[])
 {
+	ids.resize(1);
+	ids[0] = 0x7f;
+	cybergear = std::make_shared<CyberGearCan>(port, baudrate,ids);
 
-	// open serial
-	open_serial(port_, baudrate_);
-    	printf("Select Motor Mode\n");
-	select_mode(CONTROL_MODE_VEL,0x7f);//set motion mode, here is velocity mode
-	usleep(250);
-	// cyber_gear_can_t frame;
-	printf("Enable Motor\n");
-	enable_motor(0x7f);
-	usleep(250);
+	//move(uint8_t motor_id, float kp, float kd, float torque, float pos, float vel){
+	cybergear->move(ids[0], 1.0,  0.02,  0.0, 0.5, 0.0);
 	printf("Control Motor\n");
-	// control_motion(0x7f, 1.0, 0.02, 0.0, 3, 0.0);// this status do not need to set CONTORL_MODE_XX
-	//control_pos(0x7f, 1,1.0);
-	control_vel(0x7f,1.0);
 	sleep(3);// move 3 seconds
 
-	printf("Stop Motor\n");
-	stop_motor(0x7f);
-	usleep(250);
-	close_serial();
+	cybergear->stop();
+
 	return 0;
 }

@@ -1,4 +1,5 @@
 #include <unistd.h>
+#include <memory>
 #include <iostream>
 #include <stdio.h>
 #include <string.h>
@@ -21,12 +22,28 @@ enum
  * @return: int 值数据
  * */
 int float_to_byte(float data);
+}
+
+class CyberGearCan{
+private:
+	uint8_t motor_mode;
+	std::vector<int> motor_ids;
+	cyber_gear_motor_status_t motor_status;
+	serial::Serial serial_; // 串口实例
+public:
+
+CyberGearCan(std::string port_, int baudrate_, std::vector<int> motorids_, int mode_=0);
+
+/* move, move the motors
+ * @param: 
+ * */
+void move(uint8_t motor_id, float kp, float kd, float torque, float pos, float vel);
+void stop();
 
 /* can_usb模块协议数据帧正常写入
  * @param: frame 要设置CAN数组首地址
  * */
 void write_serial_normal(const cyber_gear_can_t *frame);
-
 /* can_usb模块协议数据帧小端写入
  * @param: frame 要设置CAN数组首地址
  * */
@@ -75,5 +92,4 @@ void control_pos(uint8_t motor_id, float pos, float spd);
  * @param: spd 电机目标速度
  * */
 void control_vel(uint8_t motor_id, float spd);
-
-}
+};
