@@ -36,7 +36,7 @@ add_subdirectory(cybergear)
 #add_library(动/静态链接库名称  SHARED/STATIC(可选，默认STATIC)  源码列表)
 #可以单独生成多个模块
  
-add_library(${PROJECT_NAME} ./user/src/can_usb.cpp)
+add_library(${PROJECT_NAME} SHARED ./user/src/can_usb.cpp)
 target_link_libraries(${PROJECT_NAME} PRIVATE cybergear serial )
 target_include_directories(${PROJECT_NAME} PRIVATE serial cybergear )
 
